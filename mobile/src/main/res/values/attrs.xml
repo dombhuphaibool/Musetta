@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ConcentricView">
+        <attr name="numSections" format="integer"/>
+        <attr name="innerPct" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="MusicConcentricView">
+        <attr name="note" format="enum">
+            <enum name="A" value="0"/>
+            <enum name="B" value="1"/>
+            <enum name="C" value="2"/>
+            <enum name="D" value="3"/>
+            <enum name="E" value="4"/>
+            <enum name="F" value="5"/>
+            <enum name="G" value="6"/>
+        </attr>
+    </declare-styleable>
+</resources>
