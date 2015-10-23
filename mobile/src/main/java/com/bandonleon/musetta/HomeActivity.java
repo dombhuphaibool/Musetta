@@ -21,6 +21,7 @@ import com.bandonleon.musetta.music.Interval;
 import com.bandonleon.musetta.music.IntervalGenerator;
 import com.bandonleon.musetta.music.Note;
 import com.bandonleon.musetta.music.NoteGenerator;
+import com.bandonleon.musetta.sound.NotePlayer;
 import com.bandonleon.musetta.view.ConcentricView;
 import com.bandonleon.musetta.view.MusicConcentricView;
 
@@ -64,6 +65,7 @@ public class HomeActivity extends AppCompatActivity
         init();
     }
 
+    private NotePlayer mNotePlayer;
     private MusicConcentricView mNoteSelector;
     private TextView mIntervalTxt;
     private TextView mFeedbackTxt;
@@ -75,6 +77,9 @@ public class HomeActivity extends AppCompatActivity
         mNoteSelector = (MusicConcentricView) findViewById(R.id.note_selector);
         mIntervalTxt = (TextView) findViewById(R.id.interval_txt);
         mFeedbackTxt = (TextView) findViewById(R.id.feedback_txt);
+
+        mNotePlayer = new NotePlayer();
+        mNotePlayer.loadSoundAssets(getAssets());
 
         mNoteGenerator = new NoteGenerator();
         mNoteGenerator.includeNaturals(true);
@@ -114,6 +119,7 @@ public class HomeActivity extends AppCompatActivity
                     // @TODO: Do haptic feedback & play sound
                     // PlaySound(note)
                     mNoteSelector.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    mNotePlayer.play(note, 3);
                 }
             });
         }
