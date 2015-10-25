@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.text.TextUtils;
@@ -39,6 +40,8 @@ public class ConcentricView extends View {
     private Paint mArcPaint;
     private Paint mCirclePaint;
     private Paint mLabelPaint;
+    private Typeface mTypeface;
+
     private int mNumSections;
     private int mInnerCirclePct;    // value between 0-100 inclusive
     private RectF mOuterCircleBounds;
@@ -50,7 +53,13 @@ public class ConcentricView extends View {
 
     private Map<Integer, String> mSectionLabels;
 
+    protected Typeface getTypeface() {
+        return mTypeface;
+    }
+
     private void init(Context context) {
+        mTypeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/journal.ttf");
+
         mArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mArcPaint.setStyle(Paint.Style.FILL);
         mArcPaint.setColor(Color.BLUE);
@@ -62,6 +71,7 @@ public class ConcentricView extends View {
         mLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLabelPaint.setColor(Color.BLACK);
         mLabelPaint.setTextSize(DEFAULT_LABEL_TEXT_SIZE);
+        mLabelPaint.setTypeface(mTypeface);
 
         mNumSections = DEFAULT_NUM_SECTIONS;
         mInnerCirclePct = DEFAULT_INNER_PCT;

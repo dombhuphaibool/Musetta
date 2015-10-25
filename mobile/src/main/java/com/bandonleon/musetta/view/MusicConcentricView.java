@@ -162,6 +162,7 @@ public class MusicConcentricView extends ConcentricView {
         mLabelPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mLabelPaint.setColor(Color.BLACK);
         mLabelPaint.setTextSize(DEFAULT_LABEL_TEXT_SIZE);
+        mLabelPaint.setTypeface(getTypeface());
 
         mAccidentalsRadius = DEFAULT_ACCIDENTAL_RADIUS;
         mFlatCenter = new PointF();

@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_intervals_note"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/train_intervals_note"/>
-        <item
-            android:id="@+id/nav_intervals_detection"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/train_intervals_detection"/>
-        <item
-            android:id="@+id/nav_melodic_dictation"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/train_melodic_dictation"/>
-        <item
-            android:id="@+id/nav_chords"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/train_chords"/>
-        <item
-            android:id="@+id/nav_progressions"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/train_progressions"/>
-    </group>
+    <item android:title="Train">
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_intervals_note"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="@string/train_intervals_note"/>
+            <item
+                android:id="@+id/nav_intervals_detection"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/train_intervals_detection"/>
+            <item
+                android:id="@+id/nav_melodic_dictation"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="@string/train_melodic_dictation"/>
+            <item
+                android:id="@+id/nav_chords"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/train_chords"/>
+            <item
+                android:id="@+id/nav_progressions"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="@string/train_progressions"/>
+        </group>
+    </item>
 
     <item android:title="Communicate">
         <menu>
