@@ -14,12 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bandonleon.musetta.NavigationManager;
+import com.bandonleon.musetta.NavigationManager.NavigationPage;
 import com.bandonleon.musetta.R;
 import com.bandonleon.musetta.fragment.IntervalsFragment;
+import com.bandonleon.musetta.fragment.NavigationPageFragment;
 
 public class HomeActivity extends NavigationFlowActivity {
 
     private DrawerLayout mDrawer;
+    private NavigationPageFragment mDefaultFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +57,15 @@ public class HomeActivity extends NavigationFlowActivity {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(getNavigationManager());
 
-        IntervalsFragment defaultFragment = IntervalsFragment.newInstance();
+        mDefaultFragment = IntervalsFragment.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fragment_container, defaultFragment, defaultFragment.getFragmentTag());
+        ft.add(R.id.fragment_container, mDefaultFragment, mDefaultFragment.getFragmentTag());
         ft.commit();
+    }
+
+    @Override
+    public NavigationPage getRootPage() {
+        return mDefaultFragment;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.bandonleon.musetta.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bandonleon.musetta.MusettaApplication;
 import com.bandonleon.musetta.R;
 import com.bandonleon.musetta.event.SoundAssetLoadedEvent;
 import com.bandonleon.musetta.music.Interval;
@@ -18,6 +20,7 @@ import com.bandonleon.musetta.music.NoteGenerator;
 import com.bandonleon.musetta.sound.NotePlayer;
 import com.bandonleon.musetta.view.ConcentricView;
 import com.bandonleon.musetta.view.MusicConcentricView;
+import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -30,6 +33,8 @@ public class IntervalsFragment extends NavigationPageFragment {
     private TextView mIntervalTxt;
     private TextView mFeedbackTxt;
 
+    private View mLoadingMessage;
+
     private NotePlayer mNotePlayer;
     private NoteGenerator mNoteGenerator;
     private IntervalGenerator mIntervalGenerator;
@@ -41,6 +46,10 @@ public class IntervalsFragment extends NavigationPageFragment {
         return new IntervalsFragment();
     }
 
+    protected MusicConcentricView getNoteSelector() {
+        return mNoteSelector;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,14 +57,16 @@ public class IntervalsFragment extends NavigationPageFragment {
         mNoteSelector = (MusicConcentricView) rootView.findViewById(R.id.note_selector);
         mIntervalTxt = (TextView) rootView.findViewById(R.id.interval_txt);
         mFeedbackTxt = (TextView) rootView.findViewById(R.id.feedback_txt);
+
+        mLoadingMessage = rootView.findViewById(R.id.loading_sounds);
+        mLoadingMessage.setVisibility(getApplication().isSoundLoaded() ? View.GONE : View.VISIBLE);
+
         init();
         return rootView;
     }
 
     private void init() {
-
-        mNotePlayer = new NotePlayer();
-        mNotePlayer.loadSoundAssets(getContext().getAssets());
+        mNotePlayer = getApplication().getNotePlayer();
 
         mNoteGenerator = new NoteGenerator();
         mNoteGenerator.includeNaturals(true);
@@ -74,7 +85,6 @@ public class IntervalsFragment extends NavigationPageFragment {
             mNoteSelector.setOnSectionTouchListner(new ConcentricView.OnSectionTouchListener() {
                 @Override
                 public boolean onSectionTouched(int section) {
-                    // Toast.makeText(MainActivity.this, "Section touched: " + section, Toast.LENGTH_SHORT).show();
                     Log.e("Dom", "Section touched: " + section);
                     return true;
                 }
@@ -83,19 +93,28 @@ public class IntervalsFragment extends NavigationPageFragment {
             mNoteSelector.setOnNoteSelectedListener(new MusicConcentricView.OnNoteSelectedListener() {
                 @Override
                 public void onNoteSelected(Note note) {
+                    String feedback = mCurrentNote.getName() + " -> ";
                     if (note != mCurrentNote) {
-                        String feedback = mCurrentNote.getName() + " -> " + note.getName() + " : ";
+                        feedback += note.getName() + " : ";
                         Interval selectedInterval = note.intervalFrom(mCurrentNote);
                         feedback += selectedInterval == Interval.Invalid ?
                                 selectedInterval.getName() + " Interval" :
                                 selectedInterval.getName();
-                        mFeedbackTxt.setText(feedback);
                         Log.e("Dom", "Note selected: " + note.getName() + ", interval is " + selectedInterval.getName());
+                    } else {
+                        feedback += "?";
                     }
-                    // @TODO: Do haptic feedback & play sound
-                    // PlaySound(note)
+
+                    mFeedbackTxt.setText(feedback);
                     mNoteSelector.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    mNotePlayer.play(note, 3);
+
+                    // @TODO: This assumes that we're in an ascending interval. Fix this when we
+                    // introduce descending interval
+                    int octave = 3;
+                    if (note.getPitch() < mCurrentNote.getPitch()) {
+                        ++octave;
+                    }
+                    mNotePlayer.play(note, octave);
                 }
             });
         }
@@ -115,9 +134,31 @@ public class IntervalsFragment extends NavigationPageFragment {
         mNoteSelector.setCurrentNote(mCurrentNote);
     }
 
+    /**************************************************************************
+     *
+     *  Events & Bus
+     *
+     *************************************************************************/
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        getEventBus().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        getEventBus().unregister(this);
+        super.onDetach();
+    }
+
+    protected Bus getEventBus() {
+        MusettaApplication application = getApplication();
+        return application != null ? application.getEventBus() : null;
+    }
+
     @Subscribe
     public void onSoundAssetLoaded(SoundAssetLoadedEvent event) {
         // @TODO: Hide the loading text view...
-        // Don't forget to regist the Otto event bus
+        mLoadingMessage.setVisibility(View.GONE);
     }
 }

@@ -265,10 +265,18 @@ public enum Note {
     }
 
     public static Note[] sharps() {
-        return new Note[] { C_Sharp, D_Sharp, E_Sharp, F_Sharp, G_Sharp, A_Sharp, B_Sharp };
+        return new Note[] { C_Sharp, D_Sharp, F_Sharp, G_Sharp, A_Sharp };
     }
 
     public static Note[] flats() {
+        return new Note[] { D_Flat, E_Flat, G_Flat, A_Flat, B_Flat };
+    }
+
+    public static Note[] allSharps() {
+        return new Note[] { C_Sharp, D_Sharp, E_Sharp, F_Sharp, G_Sharp, A_Sharp, B_Sharp };
+    }
+
+    public static Note[] allFlats() {
         return new Note[] { C_Flat, D_Flat, E_Flat, F_Flat, G_Flat, A_Flat, B_Flat };
     }
 

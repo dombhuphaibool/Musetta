@@ -1,6 +1,7 @@
 package com.bandonleon.musetta.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bandonleon.musetta.MusettaApplication;
@@ -18,19 +19,13 @@ public abstract class NavigationFlowActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNavigationManager = ((MusettaApplication) getApplication()).getNavigationManager();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         mNavigationManager.registerFlow(this);
-
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
         mNavigationManager.unregisterFlow(this);
+        super.onDestroy();
     }
 
     @Override

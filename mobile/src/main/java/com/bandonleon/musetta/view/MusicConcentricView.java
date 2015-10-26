@@ -29,22 +29,26 @@ public class MusicConcentricView extends ConcentricView {
 
     // This should map to xml attribute note of MusicConcentricView in attrs.xml
     public enum NoteItem {
-        A(0, Note.A, R.color.note_white),
-        B(1, Note.B, R.color.note_yellow),
-        C(2, Note.C, R.color.note_brown),
-        D(3, Note.D, R.color.note_blue),
-        E(4, Note.E, R.color.note_purple),
-        F(5, Note.F, R.color.note_red),
-        G(6, Note.G, R.color.note_green);
+        A(0, Note.A, R.color.note_white, R.color.note_white_faded, R.color.note_white_shaded),
+        B(1, Note.B, R.color.note_yellow, R.color.note_yellow_faded, R.color.note_yellow_shaded),
+        C(2, Note.C, R.color.note_brown, R.color.note_brown_faded, R.color.note_brown_shaded),
+        D(3, Note.D, R.color.note_blue, R.color.note_blue_faded, R.color.note_blue_shaded),
+        E(4, Note.E, R.color.note_purple, R.color.note_purple_faded, R.color.note_purple_shaded),
+        F(5, Note.F, R.color.note_red, R.color.note_red_faded, R.color.note_red_shaded),
+        G(6, Note.G, R.color.note_green, R.color.note_green_faded, R.color.note_green_shaded);
 
         private final int mValue;
         private final Note mNote;
         private final @ColorRes int mColor;
-        NoteItem(int value, Note note, @ColorRes int color) {
+        private final @ColorRes int mFadedColor;
+        private final @ColorRes int mShadedColor;
+        NoteItem(int value, Note note, @ColorRes int color, @ColorRes int fadedColor,
+                 @ColorRes int shadedColor) {
             mValue = value;
             mNote = note;
             mColor = color;
-
+            mFadedColor = fadedColor;
+            mShadedColor = shadedColor;
         }
 
         public static NoteItem fromIntValue(int value) {
@@ -83,6 +87,15 @@ public class MusicConcentricView extends ConcentricView {
 
         public @ColorRes int color() {
             return mColor;
+        }
+
+        public @ColorRes int fadedColor()
+        {
+            return mFadedColor;
+        }
+
+        public @ColorRes int shadedColor() {
+            return mShadedColor;
         }
 
         public String label() {
@@ -178,6 +191,11 @@ public class MusicConcentricView extends ConcentricView {
         mVerticalSharpPos = new PointF();
     }
 
+    private int mNoteColorStyle = 1;
+    public void setNoteColorStyle(int style) {
+        mNoteColorStyle = style;
+    }
+
     @Override
     protected @ColorInt int getCenterColor() {
         return getResources().getColor(NoteItem.fromNote(mCurrentNote).color());
@@ -185,7 +203,11 @@ public class MusicConcentricView extends ConcentricView {
 
     @Override
     protected @ColorInt int getSectionColor(int sectionIdx) {
-        return getResources().getColor(mOtherNoteItems.get(sectionIdx).color());
+        if (mNoteColorStyle == 1) {
+            return getResources().getColor(mOtherNoteItems.get(sectionIdx).color());
+        } else {
+            return getResources().getColor(NoteItem.fromNote(mCurrentNote).fadedColor());
+        }
     }
 
     @Override
