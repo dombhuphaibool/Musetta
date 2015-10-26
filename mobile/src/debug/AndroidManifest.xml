@@ -4,7 +4,7 @@
           xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        tools:replace="android:name"
+        tools:replace="android:name,android:label"
         android:name=".MusettaDebugApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_musetta"

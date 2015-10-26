@@ -140,7 +140,7 @@ public class NavigationManager implements NavigationView.OnNavigationItemSelecte
                     break;
 
                 case R.id.nav_progressions:
-                    fragment = PlaceholderFragment.newInstance("Very, very much!!!");
+                    fragment = PlaceholderFragment.newInstance("Yes, he does y con mucho cariños <3");
                     break;
 
                 case R.id.nav_share:

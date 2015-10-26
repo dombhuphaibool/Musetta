@@ -1,7 +1,6 @@
 package com.bandonleon.musetta.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -191,6 +190,8 @@ public class IntervalsFragment extends NavigationPageFragment {
     @Subscribe
     public void onSoundAssetLoaded(SoundAssetLoadedEvent event) {
         // @TODO: Hide the loading text view...
-        mLoadingMessage.setVisibility(View.GONE);
+        if (mLoadingMessage != null) {
+            mLoadingMessage.setVisibility(View.GONE);
+        }
     }
 }

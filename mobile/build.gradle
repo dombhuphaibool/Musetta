@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+    useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.bandonleon.musetta"
@@ -11,10 +12,32 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            def releaseKeystore = "~/Dev/Android/bandonleon.keystore"
+            if (System.getenv("BANDONLEON_KEYSTORE") != null) {
+                releaseKeystore = System.getenv("BANDONLEON_KEYSTORE")
+            }
+            storeFile file(releaseKeystore)
+            storePassword System.getenv("BANDONLEON_KEYSTORE_PASS")
+            keyAlias "musetta"
+            keyPassword System.getenv("BANDONLEON_MUSETTA_PASS")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def newName = "musetta-" + output.outputFile.name
+                    output.outputFile = new File(output.outputFile.parent, newName)
+                }
+            }
         }
     }
 }
