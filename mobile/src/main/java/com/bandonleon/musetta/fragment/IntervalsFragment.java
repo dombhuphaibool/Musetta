@@ -1,8 +1,13 @@
 package com.bandonleon.musetta.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -32,6 +37,7 @@ public class IntervalsFragment extends NavigationPageFragment {
     private MusicConcentricView mNoteSelector;
     private TextView mIntervalTxt;
     private TextView mFeedbackTxt;
+    private TextView mRetryTxt;
 
     private View mLoadingMessage;
 
@@ -57,6 +63,7 @@ public class IntervalsFragment extends NavigationPageFragment {
         mNoteSelector = (MusicConcentricView) rootView.findViewById(R.id.note_selector);
         mIntervalTxt = (TextView) rootView.findViewById(R.id.interval_txt);
         mFeedbackTxt = (TextView) rootView.findViewById(R.id.feedback_txt);
+        mRetryTxt = (TextView) rootView.findViewById(R.id.retry_txt);
 
         mLoadingMessage = rootView.findViewById(R.id.loading_sounds);
         mLoadingMessage.setVisibility(getApplication().isSoundLoaded() ? View.GONE : View.VISIBLE);
@@ -90,22 +97,47 @@ public class IntervalsFragment extends NavigationPageFragment {
                 }
             });
 
+            @ColorInt int correctTxtColor = getResources().getColor(R.color.correct_text);
+            @ColorInt int incorrectTxtColor = getResources().getColor(R.color.incorrect_text);
+            final ForegroundColorSpan correctCS = new ForegroundColorSpan(correctTxtColor);
+            final ForegroundColorSpan incorrectCS = new ForegroundColorSpan(incorrectTxtColor);
             mNoteSelector.setOnNoteSelectedListener(new MusicConcentricView.OnNoteSelectedListener() {
                 @Override
                 public void onNoteSelected(Note note) {
-                    String feedback = mCurrentNote.getName() + " -> ";
+                    SpannableStringBuilder sb = new SpannableStringBuilder(mCurrentNote.getName());
+                    sb.append(" -> ");
+                    int colorBeginIdx = 0;
+                    // String feedback = mCurrentNote.getName() + " -> ";
                     if (note != mCurrentNote) {
-                        feedback += note.getName() + " : ";
+                        // feedback += note.getName() + " : ";
+                        sb.append(note.getName()).append(" : ");
+                        colorBeginIdx = sb.length();
                         Interval selectedInterval = note.intervalFrom(mCurrentNote);
-                        feedback += selectedInterval == Interval.Invalid ?
-                                selectedInterval.getName() + " Interval" :
-                                selectedInterval.getName();
-                        Log.e("Dom", "Note selected: " + note.getName() + ", interval is " + selectedInterval.getName());
+                        if (selectedInterval == mCurrentInterval) {
+                            // feedback += "Correct!";
+                            sb.append("Correct!");
+                            sb.setSpan(correctCS, colorBeginIdx, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                            mRetryTxt.setVisibility(View.GONE);
+                        } else {
+                            /*
+                            feedback += selectedInterval == Interval.Invalid ?
+                                    selectedInterval.getName() + " Interval" :
+                                    selectedInterval.getName();
+                            */
+                            sb.append(selectedInterval == Interval.Invalid ?
+                                    selectedInterval.getName() + " Interval" :
+                                    selectedInterval.getName());
+                            sb.setSpan(incorrectCS, colorBeginIdx, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+                            mRetryTxt.setVisibility(View.VISIBLE);
+                        }
+                        // Log.e("Dom", "Note selected: " + note.getName() + ", interval is " + selectedInterval.getName());
                     } else {
-                        feedback += "?";
+                        // feedback += "?";
+                        sb.append("?");
+                        mRetryTxt.setVisibility(View.GONE);
                     }
 
-                    mFeedbackTxt.setText(feedback);
+                    mFeedbackTxt.setText(sb);
                     mNoteSelector.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 
                     // @TODO: This assumes that we're in an ascending interval. Fix this when we

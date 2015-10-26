@@ -41,4 +41,6 @@
 
     <color name="dark_grey">#6E6E6E</color>
     <color name="light_yellow">#FFFF99</color>
+    <color name="incorrect_text">#FC3D50</color>
+    <color name="correct_text">#21E310</color>
 </resources>

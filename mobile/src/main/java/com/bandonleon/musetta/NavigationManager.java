@@ -34,7 +34,6 @@ public class NavigationManager implements NavigationView.OnNavigationItemSelecte
         DrawerLayout getDrawer();
         @IdRes int getContainerViewId();
         AppCompatActivity getActivity();
-        NavigationPage getRootPage();
     }
 
     public interface NavigationPage {
@@ -94,9 +93,7 @@ public class NavigationManager implements NavigationView.OnNavigationItemSelecte
     }
 
     public void registerFlow(NavigationFlow flow) {
-        NavigationFlowStackItem flowItem = new NavigationFlowStackItem(flow);
-        flowItem.pushPage(flow.getRootPage());
-        mFlows.push(flowItem);
+        mFlows.push(new NavigationFlowStackItem(flow));
     }
 
     public void unregisterFlow(NavigationFlow flow) {
@@ -104,6 +101,14 @@ public class NavigationManager implements NavigationView.OnNavigationItemSelecte
         if (poppedFlowItem.getFlow() != flow) {
             throw new IllegalStateException("Attempting to pop a flow that is not on top of the stack");
         }
+    }
+
+    public void addPageToCurrentFlow(NavigationPage page) {
+        NavigationFlowStackItem currentFlowItem = mFlows.peek();
+        if (currentFlowItem == null) {
+            throw new IllegalStateException("addPageToCurrentFlow() called but there's no flow on the stack");
+        }
+        currentFlowItem.pushPage(page);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

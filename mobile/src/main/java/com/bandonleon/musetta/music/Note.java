@@ -228,6 +228,10 @@ public enum Note {
 
     public Interval intervalFrom(Note noteBelow) {
         Interval baseInterval = naturalize(this).pitchIntervalFrom(naturalize(noteBelow));
+        // For natural notes, tritone only occurs for B & F
+        if (baseInterval == Interval.Tritone) {
+            baseInterval = naturalize(noteBelow) == F ? Interval.AugmentedFourth : Interval.DiminishedFifth;
+        }
         int baseSemitoneDiff = baseInterval.getSemitone();
         int realSemitoneDiff = pitchIntervalFrom(noteBelow).getSemitone();
         return adjustInterval(baseInterval, baseSemitoneDiff, realSemitoneDiff);
@@ -235,6 +239,10 @@ public enum Note {
 
     public Interval intervalTo(Note noteAbove) {
         Interval baseInterval = naturalize(this).pitchIntervalTo(naturalize(noteAbove));
+        // For natural notes, tritone only occurs for B & F
+        if (baseInterval == Interval.Tritone) {
+            baseInterval = naturalize(noteAbove) == B ? Interval.AugmentedFourth : Interval.DiminishedFifth;
+        }
         int baseSemitoneDiff = baseInterval.getSemitone();
         int realSemitoneDiff = pitchIntervalTo(noteAbove).getSemitone();
         return adjustInterval(baseInterval, baseSemitoneDiff, realSemitoneDiff);
