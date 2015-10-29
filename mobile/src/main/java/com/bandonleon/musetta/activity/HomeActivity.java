@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bandonleon.musetta.NavigationManager.FLOW;
 import com.bandonleon.musetta.R;
 import com.bandonleon.musetta.fragment.IntervalsFragment;
 import com.bandonleon.musetta.fragment.NavigationPageFragment;
@@ -72,11 +73,6 @@ public class HomeActivity extends NavigationFlowActivity {
     }
 
     @Override
-    public AppCompatActivity getActivity() {
-        return this;
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
@@ -92,11 +88,9 @@ public class HomeActivity extends NavigationFlowActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            // @TODO...
-            return true;
+            return getNavigationManager().gotoFlow(FLOW.SETTINGS);
         } else if (id == R.id.action_about) {
-            // @TODO...
-            return true;
+            return getNavigationManager().gotoFlow(FLOW.ABOUT);
         }
 
         return super.onOptionsItemSelected(item);

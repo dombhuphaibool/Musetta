@@ -30,6 +30,12 @@ import java.util.ArrayDeque;
  */
 public class NavigationManager implements NavigationView.OnNavigationItemSelectedListener {
 
+    public enum FLOW {
+        HOME,
+        SETTINGS,
+        ABOUT
+    }
+
     public interface NavigationFlow {
         DrawerLayout getDrawer();
         @IdRes int getContainerViewId();
@@ -203,6 +209,24 @@ public class NavigationManager implements NavigationView.OnNavigationItemSelecte
                 }
                 // Note: Activity.onStop() should pop the current flow off of the flow stack
             }
+        }
+        return handled;
+    }
+
+    public boolean gotoFlow(FLOW flow) {
+        boolean handled = false;
+        switch (flow) {
+            case SETTINGS:
+
+                break;
+
+            case ABOUT:
+
+                break;
+
+            default:
+
+                break;
         }
         return handled;
     }

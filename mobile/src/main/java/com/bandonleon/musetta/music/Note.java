@@ -8,53 +8,63 @@ package com.bandonleon.musetta.music;
 // Double-Sharp in unicode is \uD834\uDD2A
 // Double-Flat in unicode is \uD834\uDD2B
 public enum Note {
-    Invalid(-1, "Invalide", 0),
+    Invalid(-1, "Invalid", "Invalid", 0),
 
-    C_Flat(11, "C♭", 1),
-    C(0, "C", 2),
-    C_Sharp(1, "C♯", 3),
-    C_DoubleSharp(2, "C", 4),
+    C_Flat(11, "C♭", "Do♭", 1),
+    C(0, "C", "Do", 2),
+    C_Sharp(1, "C♯", "Do♯", 3),
+    C_DoubleSharp(2, "C\uD834\uDD2A", "Do\uD834\uDD2A", 4),
 
-    D_DoubleFlat(0, "D\uD834\uDD2B", 5),
-    D_Flat(1, "D♭", 6),
-    D(2, "D", 7),
-    D_Sharp(3, "D♯", 8),
-    D_DoubleSharp(4, "D\uD834\uDD2A", 9),
+    D_DoubleFlat(0, "D\uD834\uDD2B", "Re\uD834\uDD2B", 5),
+    D_Flat(1, "D♭", "Re♭", 6),
+    D(2, "D", "Re", 7),
+    D_Sharp(3, "D♯", "Re♯", 8),
+    D_DoubleSharp(4, "D\uD834\uDD2A", "Re\uD834\uDD2A", 9),
 
-    E_DoubleFlat(2, "E\uD834\uDD2B", 10),
-    E_Flat(3, "E♭", 11),
-    E(4, "E", 12),
-    E_Sharp(5, "E♯", 13),
+    E_DoubleFlat(2, "E\uD834\uDD2B", "Mi\uD834\uDD2B", 10),
+    E_Flat(3, "E♭", "Mi♭", 11),
+    E(4, "E", "Mi", 12),
+    E_Sharp(5, "E♯", "Mi♯", 13),
 
-    F_Flat(4, "F♭", 14),
-    F(5, "F", 15),
-    F_Sharp(6, "F♯", 16),
-    F_DoubleSharp(7, "F\uD834\uDD2A", 17),
+    F_Flat(4, "F♭", "Fa♭", 14),
+    F(5, "F", "Fa", 15),
+    F_Sharp(6, "F♯", "Fa♯", 16),
+    F_DoubleSharp(7, "F\uD834\uDD2A", "Fa\uD834\uDD2A", 17),
 
-    G_DoubleFlat(5, "G\uD834\uDD2B", 18),
-    G_Flat(6, "G♭", 19),
-    G(7, "G", 20),
-    G_Sharp(8, "G♯", 21),
-    G_DoubleSharp(9, "G\uD834\uDD2A", 22),
+    G_DoubleFlat(5, "G\uD834\uDD2B", "Sol\uD834\uDD2B", 18),
+    G_Flat(6, "G♭", "Sol♭", 19),
+    G(7, "G", "Sol", 20),
+    G_Sharp(8, "G♯", "Sol♯", 21),
+    G_DoubleSharp(9, "G\uD834\uDD2A", "Sol\uD834\uDD2A", 22),
 
-    A_DoubleFlat(7, "A\uD834\uDD2B", 23),
-    A_Flat(8, "A♭", 24),
-    A(9, "A", 25),
-    A_Sharp(10, "A♯", 26),
-    A_DoubleSharp(11, "A\uD834\uDD2A", 27),
+    A_DoubleFlat(7, "A\uD834\uDD2B", "La\uD834\uDD2B", 23),
+    A_Flat(8, "A♭", "La♭", 24),
+    A(9, "A", "La", 25),
+    A_Sharp(10, "A♯", "La♯", 26),
+    A_DoubleSharp(11, "A\uD834\uDD2A", "La\uD834\uDD2A", 27),
 
-    B_DoubleFlat(9, "B\uD834\uDD2B", 28),
-    B_Flat(10, "B♭", 29),
-    B(11, "B", 30),
-    B_Sharp(0, "B♯", 31);
+    B_DoubleFlat(9, "B\uD834\uDD2B", "Si\uD834\uDD2B", 28),
+    B_Flat(10, "B♭", "Si♭", 29),
+    B(11, "B", "Si", 30),
+    B_Sharp(0, "B♯", "Si♯", 31);
+
+    private static NoteMode sMode = NoteMode.Letter;
+    public static void setMode(NoteMode mode) {
+        sMode = mode;
+    }
+    public static NoteMode getMode() {
+        return sMode;
+    }
 
     private final int mPitch;
-    private final String mName;
+    private final String mLetterName;
+    private final String mSolfegeName;
     private final int mOrdinal;
 
-    Note(int pitch, String name, int oridnal) {
+    Note(int pitch, String letterName, String solfegeName, int oridnal) {
         mPitch = pitch;
-        mName = name;
+        mLetterName = letterName;
+        mSolfegeName = solfegeName;
         mOrdinal = oridnal;
     }
 
@@ -63,7 +73,7 @@ public enum Note {
     }
 
     public String getName() {
-        return mName;
+        return sMode == NoteMode.Letter ? mLetterName : mSolfegeName;
     }
 
     public int getOrdinalValue() {

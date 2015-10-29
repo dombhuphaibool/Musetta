@@ -34,6 +34,11 @@ public abstract class NavigationFlowActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public AppCompatActivity getActivity() {
+        return this;
+    }
+
     protected NavigationManager getNavigationManager() {
         return mNavigationManager;
     }
