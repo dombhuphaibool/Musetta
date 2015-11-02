@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.bandonleon.musetta.MusettaApplication;
-import com.bandonleon.musetta.NavigationManager.NavigationPage;
+import com.bandonleon.musetta.navigation.NavigationPage;
 
 /**
  * Created by dombhuphaibool on 10/24/15.
@@ -24,6 +24,11 @@ public abstract class NavigationPageFragment extends Fragment implements Navigat
     @Override
     public Fragment getFragment() {
         return this;
+    }
+
+    @Override
+    public boolean isTransient() {
+        return false;
     }
 
     @Override

@@ -1,8 +1,18 @@
 package com.bandonleon.musetta;
 
+import android.app.Activity;
 import android.app.Application;
 
+import com.bandonleon.musetta.activity.AboutActivity;
+import com.bandonleon.musetta.activity.HomeActivity;
+import com.bandonleon.musetta.activity.SettingsActivity;
 import com.bandonleon.musetta.event.SoundAssetLoadedEvent;
+import com.bandonleon.musetta.fragment.Intervals2Fragment;
+import com.bandonleon.musetta.fragment.IntervalsFragment;
+import com.bandonleon.musetta.fragment.PlaceholderFragment;
+import com.bandonleon.musetta.navigation.HostableFlows;
+import com.bandonleon.musetta.navigation.NavigationFlow;
+import com.bandonleon.musetta.navigation.NavigationManager;
 import com.bandonleon.musetta.sound.NotePlayer;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
@@ -37,6 +47,8 @@ public class MusettaApplication extends Application {
         mEventBus.register(this);
 
         mNavigationManager = new NavigationManager();
+        registerFlows(mNavigationManager);
+        registerPages(mNavigationManager);
 
         mSoundAssetLoadState = SoundAssetLoadedEvent.State.Idle;
         mNotePlayer = new NotePlayer();
@@ -78,5 +90,36 @@ public class MusettaApplication extends Application {
     @Produce
     public SoundAssetLoadedEvent produceSoundAssetLoadedEvent() {
         return (new SoundAssetLoadedEvent(mSoundAssetLoadState));
+    }
+
+    private void registerFlows(NavigationManager navigationManager) {
+        navigationManager.registerFlow(0, HomeActivity.getIntent(this));
+        navigationManager.registerFlow(R.id.action_settings, SettingsActivity.getIntent(this));
+        navigationManager.registerFlow(R.id.action_about, AboutActivity.getIntent(this));
+    }
+
+    private void registerPages(NavigationManager navigationManager) {
+        navigationManager.registerPage(R.id.nav_intervals_note,
+                new HostableFlows().addFlows(getHomeActivityClass()),
+                IntervalsFragment.createInstantiator());
+        navigationManager.registerPage(R.id.nav_intervals_detection,
+                new HostableFlows().addFlows(getHomeActivityClass()),
+                Intervals2Fragment.createInstantiator());
+        navigationManager.registerPage(R.id.nav_melodic_dictation,
+                new HostableFlows().addFlows(getHomeActivityClass()),
+                PlaceholderFragment.createInstantiator("Who loves you baby boo?"));
+        navigationManager.registerPage(R.id.nav_chords,
+                new HostableFlows().addFlows(getHomeActivityClass()),
+                PlaceholderFragment.createInstantiator("Your bhu bhu loves you! =)"));
+        navigationManager.registerPage(R.id.nav_progressions,
+                new HostableFlows().addFlows(getHomeActivityClass()),
+                PlaceholderFragment.createInstantiator("Yes, he does y con mucho cariños <3"));
+
+        // R.id.nav_share
+        // R.id.nav_send
+    }
+
+    protected Class<? extends HomeActivity> getHomeActivityClass() {
+        return HomeActivity.class;
     }
 }

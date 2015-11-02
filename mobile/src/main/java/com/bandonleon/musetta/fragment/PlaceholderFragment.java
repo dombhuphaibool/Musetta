@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bandonleon.musetta.R;
+import com.bandonleon.musetta.navigation.NavigationPage;
+import com.bandonleon.musetta.navigation.NavigationPageInstantiator;
 
 /**
  * Created by dombhuphaibool on 10/25/15.
@@ -19,12 +21,17 @@ public class PlaceholderFragment extends NavigationPageFragment {
 
     private TextView mText;
 
-    public static PlaceholderFragment newInstance(String text) {
-        Bundle args = new Bundle();
-        args.putString(ARGS_PLACEHOLDER_TEXT, text);
-        PlaceholderFragment fragment = new PlaceholderFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public static NavigationPageInstantiator createInstantiator(final String text) {
+        return new NavigationPageInstantiator() {
+            @Override
+            public NavigationPage instantiate() {
+                Bundle args = new Bundle();
+                args.putString(ARGS_PLACEHOLDER_TEXT, text);
+                PlaceholderFragment fragment = new PlaceholderFragment();
+                fragment.setArguments(args);
+                return fragment;
+            }
+        };
     }
 
     @Override

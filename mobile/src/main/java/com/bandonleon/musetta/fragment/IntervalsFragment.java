@@ -21,6 +21,8 @@ import com.bandonleon.musetta.music.Interval;
 import com.bandonleon.musetta.music.IntervalGenerator;
 import com.bandonleon.musetta.music.Note;
 import com.bandonleon.musetta.music.NoteGenerator;
+import com.bandonleon.musetta.navigation.NavigationPage;
+import com.bandonleon.musetta.navigation.NavigationPageInstantiator;
 import com.bandonleon.musetta.sound.NotePlayer;
 import com.bandonleon.musetta.view.ConcentricView;
 import com.bandonleon.musetta.view.MusicConcentricView;
@@ -47,8 +49,13 @@ public class IntervalsFragment extends NavigationPageFragment {
     private Note mCurrentNote = Note.D;
     private Interval mCurrentInterval;
 
-    public static IntervalsFragment newInstance() {
-        return new IntervalsFragment();
+    public static NavigationPageInstantiator createInstantiator() {
+        return new NavigationPageInstantiator() {
+            @Override
+            public NavigationPage instantiate() {
+                return new IntervalsFragment();
+            }
+        };
     }
 
     protected MusicConcentricView getNoteSelector() {

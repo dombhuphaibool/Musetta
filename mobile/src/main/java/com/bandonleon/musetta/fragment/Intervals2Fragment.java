@@ -6,13 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bandonleon.musetta.navigation.NavigationPage;
+import com.bandonleon.musetta.navigation.NavigationPageInstantiator;
+
 /**
  * Created by dombhuphaibool on 10/25/15.
  */
 public class Intervals2Fragment extends IntervalsFragment {
 
-    public static Intervals2Fragment newInstance() {
-        return new Intervals2Fragment();
+    public static NavigationPageInstantiator createInstantiator() {
+        return new NavigationPageInstantiator() {
+            @Override
+            public NavigationPage instantiate() {
+                return new Intervals2Fragment();
+            }
+        };
     }
 
     @Nullable
