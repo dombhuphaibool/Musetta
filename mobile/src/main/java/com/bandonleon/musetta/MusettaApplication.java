@@ -1,6 +1,5 @@
 package com.bandonleon.musetta;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.bandonleon.musetta.activity.AboutActivity;
@@ -11,11 +10,12 @@ import com.bandonleon.musetta.fragment.Intervals2Fragment;
 import com.bandonleon.musetta.fragment.IntervalsFragment;
 import com.bandonleon.musetta.fragment.PlaceholderFragment;
 import com.bandonleon.musetta.navigation.HostableFlows;
-import com.bandonleon.musetta.navigation.NavigationFlow;
 import com.bandonleon.musetta.navigation.NavigationManager;
 import com.bandonleon.musetta.sound.NotePlayer;
+import com.crashlytics.android.Crashlytics;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by dombhuphaibool on 10/24/15.
@@ -40,6 +40,10 @@ public class MusettaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, new Crashlytics());
+        }
 
         // sAppInstance = this;
 

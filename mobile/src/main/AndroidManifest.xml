@@ -3,6 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".MusettaApplication"
@@ -23,6 +24,8 @@
         </activity>
         <activity android:name=".activity.SettingsActivity">
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="fe9edd75f5b1a8054770771e4f21fe4aa4fd7010"/>
     </application>
-
 </manifest>
